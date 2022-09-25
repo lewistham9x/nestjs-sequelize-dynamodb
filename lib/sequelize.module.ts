@@ -1,5 +1,5 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
+import { SequelizeOptions } from 'sequelize-typescript';
 import { EntitiesMetadataStorage } from './entities-metadata.storage';
 import {
   SequelizeModuleAsyncOptions,
@@ -20,7 +20,7 @@ export class SequelizeModule {
 
   static forFeature(
     entities: Function[] = [],
-    connection: DynamoSequelizeOptions | string = DEFAULT_CONNECTION_NAME,
+    connection: SequelizeOptions | string = DEFAULT_CONNECTION_NAME,
   ): DynamicModule {
     const providers = createSequelizeProviders(entities, connection);
     EntitiesMetadataStorage.addEntitiesByConnection(connection, entities);

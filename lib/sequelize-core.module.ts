@@ -9,8 +9,7 @@ import {
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { defer, lastValueFrom } from 'rxjs';
-import { Sequelize } from 'sequelize-typescript';
-import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
+import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { Dynamo } from './dynamo-sequelize/dynamo';
 import {
   generateString,
@@ -44,7 +43,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
       useValue: options,
     };
     const connectionProvider = {
-      provide: getConnectionToken(options as DynamoSequelizeOptions) as string,
+      provide: getConnectionToken(options as SequelizeOptions) as string,
       useFactory: async () => await this.createConnectionFactory(options),
     };
 
@@ -57,7 +56,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
 
   static forRootAsync(options: SequelizeModuleAsyncOptions): DynamicModule {
     const connectionProvider = {
-      provide: getConnectionToken(options as DynamoSequelizeOptions) as string,
+      provide: getConnectionToken(options as SequelizeOptions) as string,
       useFactory: async (sequelizeOptions: SequelizeModuleOptions) => {
         if (options.name) {
           return await this.createConnectionFactory({
@@ -88,9 +87,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
 
   async onApplicationShutdown() {
     const connection = this.moduleRef.get<Sequelize>(
-      getConnectionToken(
-        this.options as DynamoSequelizeOptions,
-      ) as Type<Sequelize>,
+      getConnectionToken(this.options as SequelizeOptions) as Type<Sequelize>,
     );
     connection && (await connection.close());
   }
