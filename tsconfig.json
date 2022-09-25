@@ -4,6 +4,7 @@
     "declaration": true,
     "strict": true,
     "removeComments": true,
+    "esModuleInterop": true,
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -13,12 +14,6 @@
     "rootDir": "./lib",
     "skipLibCheck": true
   },
-  "include": [
-    "lib/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts",
-    "tests",
-  ]
+  "include": ["lib/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "tests"]
 }

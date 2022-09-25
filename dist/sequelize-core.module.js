@@ -26,7 +26,7 @@ exports.SequelizeCoreModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const rxjs_1 = require("rxjs");
-const SequelizeDynamo = require('dynamo-sequelize');
+const dynamo_1 = require("./dynamo-sequelize/dynamo");
 const sequelize_utils_1 = require("./common/sequelize.utils");
 const entities_metadata_storage_1 = require("./entities-metadata.storage");
 const sequelize_constants_1 = require("./sequelize.constants");
@@ -116,15 +116,12 @@ let SequelizeCoreModule = SequelizeCoreModule_1 = class SequelizeCoreModule {
     static createConnectionFactory(options) {
         return __awaiter(this, void 0, void 0, function* () {
             return (0, rxjs_1.lastValueFrom)((0, rxjs_1.defer)(() => __awaiter(this, void 0, void 0, function* () {
-                const sequelize = (options === null || options === void 0 ? void 0 : options.uri)
-                    ? new SequelizeDynamo(options.uri, options)
-                    : new SequelizeDynamo(options);
+                const sequelize = new dynamo_1.Dynamo(options);
                 if (!options.autoLoadModels) {
                     return sequelize;
                 }
                 const connectionToken = options.name || sequelize_constants_1.DEFAULT_CONNECTION_NAME;
                 const models = entities_metadata_storage_1.EntitiesMetadataStorage.getEntitiesByConnection(connectionToken);
-                sequelize.addModels(models);
                 yield sequelize.authenticate();
                 if (typeof options.synchronize === 'undefined' || options.synchronize) {
                     yield sequelize.sync(options.sync);

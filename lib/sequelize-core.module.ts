@@ -11,7 +11,7 @@ import { ModuleRef } from '@nestjs/core';
 import { defer, lastValueFrom } from 'rxjs';
 import { Sequelize } from 'sequelize-typescript';
 import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
-const SequelizeDynamo = require('dynamo-sequelize').default;
+import { Dynamo } from './dynamo-sequelize/dynamo';
 import {
   generateString,
   getConnectionToken,
@@ -139,9 +139,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
   ): Promise<any> {
     return lastValueFrom(
       defer(async () => {
-        const sequelize = options?.uri
-          ? new (SequelizeDynamo as any)(options.uri, options)
-          : new (SequelizeDynamo as any)(options);
+        const sequelize = new Dynamo(options);
 
         if (!options.autoLoadModels) {
           return sequelize;
@@ -150,7 +148,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
         const connectionToken = options.name || DEFAULT_CONNECTION_NAME;
         const models =
           EntitiesMetadataStorage.getEntitiesByConnection(connectionToken);
-        sequelize.addModels(models as any);
+        // sequelize.addModels(models as any);
 
         await sequelize.authenticate();
 
