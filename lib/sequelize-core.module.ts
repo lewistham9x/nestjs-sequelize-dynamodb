@@ -10,6 +10,7 @@ import {
 import { ModuleRef } from '@nestjs/core';
 import { defer, lastValueFrom } from 'rxjs';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import SequelizeDynamo from 'dynamo-sequelize';
 import {
   generateString,
   getConnectionToken,
@@ -132,21 +133,20 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
 
   private static async createConnectionFactory(
     options: SequelizeModuleOptions,
-  ): Promise<Sequelize> {
+  ): Promise<SequelizeDynamo> {
     return lastValueFrom(
       defer(async () => {
         const sequelize = options?.uri
-          ? new Sequelize(options.uri, options)
-          : new Sequelize(options);
+          ? new (SequelizeDynamo as any)(options.uri, options)
+          : new (SequelizeDynamo as any)(options);
 
         if (!options.autoLoadModels) {
           return sequelize;
         }
 
         const connectionToken = options.name || DEFAULT_CONNECTION_NAME;
-        const models = EntitiesMetadataStorage.getEntitiesByConnection(
-          connectionToken,
-        );
+        const models =
+          EntitiesMetadataStorage.getEntitiesByConnection(connectionToken);
         sequelize.addModels(models as any);
 
         await sequelize.authenticate();
