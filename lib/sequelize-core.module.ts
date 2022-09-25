@@ -11,7 +11,7 @@ import { ModuleRef } from '@nestjs/core';
 import { defer, lastValueFrom } from 'rxjs';
 import { Sequelize } from 'sequelize-typescript';
 import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
-const SequelizeDynamo = require('dynamo-sequelize');
+const SequelizeDynamo = require('dynamo-sequelize').default;
 import {
   generateString,
   getConnectionToken,
