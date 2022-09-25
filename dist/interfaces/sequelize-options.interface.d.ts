@@ -1,6 +1,9 @@
 import { Type } from '@nestjs/common';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { SequelizeOptions } from 'sequelize-typescript';
+import { Options } from 'sequelize';
+export interface DynamoSequelizeOptions extends Omit<Options, 'dialect'> {
+    dialect?: 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'dynamo' | 'dynamodb';
+}
 export declare type SequelizeModuleOptions = {
     name?: string;
     retryAttempts?: number;
@@ -8,7 +11,7 @@ export declare type SequelizeModuleOptions = {
     autoLoadModels?: boolean;
     synchronize?: boolean;
     uri?: string;
-} & Partial<SequelizeOptions>;
+} & Partial<DynamoSequelizeOptions>;
 export interface SequelizeOptionsFactory {
     createSequelizeOptions(connectionName?: string): Promise<SequelizeModuleOptions> | SequelizeModuleOptions;
 }

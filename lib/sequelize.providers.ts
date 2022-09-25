@@ -1,12 +1,13 @@
 import { Provider } from '@nestjs/common';
-import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import { Sequelize } from 'sequelize-typescript';
+import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
 import { getConnectionToken, getModelToken } from './common/sequelize.utils';
 
 export function createSequelizeProviders(
   entities?: Function[],
-  connection?: SequelizeOptions | string,
+  connection?: DynamoSequelizeOptions | string,
 ): Provider[] {
-  const repositories = (entities || []).map(entity => ({
+  const repositories = (entities || []).map((entity) => ({
     provide: getModelToken(entity, connection),
     useFactory: (connection: Sequelize) => {
       if (!connection.repositoryMode) {

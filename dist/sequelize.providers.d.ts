@@ -1,3 +1,3 @@
 import { Provider } from '@nestjs/common';
-import { SequelizeOptions } from 'sequelize-typescript';
-export declare function createSequelizeProviders(entities?: Function[], connection?: SequelizeOptions | string): Provider[];
+import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
+export declare function createSequelizeProviders(entities?: Function[], connection?: DynamoSequelizeOptions | string): Provider[];
