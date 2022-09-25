@@ -26,7 +26,7 @@ exports.SequelizeCoreModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const rxjs_1 = require("rxjs");
-const dynamo_sequelize_1 = require("dynamo-sequelize");
+const SequelizeDynamo = require('dynamo-sequelize');
 const sequelize_utils_1 = require("./common/sequelize.utils");
 const entities_metadata_storage_1 = require("./entities-metadata.storage");
 const sequelize_constants_1 = require("./sequelize.constants");
@@ -117,8 +117,8 @@ let SequelizeCoreModule = SequelizeCoreModule_1 = class SequelizeCoreModule {
         return __awaiter(this, void 0, void 0, function* () {
             return (0, rxjs_1.lastValueFrom)((0, rxjs_1.defer)(() => __awaiter(this, void 0, void 0, function* () {
                 const sequelize = (options === null || options === void 0 ? void 0 : options.uri)
-                    ? new dynamo_sequelize_1.default(options.uri, options)
-                    : new dynamo_sequelize_1.default(options);
+                    ? new SequelizeDynamo(options.uri, options)
+                    : new SequelizeDynamo(options);
                 if (!options.autoLoadModels) {
                     return sequelize;
                 }

@@ -11,7 +11,7 @@ import { ModuleRef } from '@nestjs/core';
 import { defer, lastValueFrom } from 'rxjs';
 import { Sequelize } from 'sequelize-typescript';
 import { DynamoSequelizeOptions } from './interfaces/sequelize-options.interface';
-import SequelizeDynamo from 'dynamo-sequelize';
+const SequelizeDynamo = require('dynamo-sequelize');
 import {
   generateString,
   getConnectionToken,
@@ -136,7 +136,7 @@ export class SequelizeCoreModule implements OnApplicationShutdown {
 
   private static async createConnectionFactory(
     options: SequelizeModuleOptions,
-  ): Promise<SequelizeDynamo> {
+  ): Promise<any> {
     return lastValueFrom(
       defer(async () => {
         const sequelize = options?.uri
