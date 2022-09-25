@@ -30,6 +30,8 @@ export type SequelizeModuleOptions = {
    * Sequelize connection string
    */
   uri?: string;
+
+  dialect: string;
 } & Partial<SequelizeOptions>;
 
 export interface SequelizeOptionsFactory {
